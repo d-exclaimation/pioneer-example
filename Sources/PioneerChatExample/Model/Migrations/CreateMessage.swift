@@ -13,8 +13,8 @@ struct CreateMessage: AsyncMigration {
             .id()
             .field("content", .string, .required)
             .field("created_at", .string)
-            .field("user_id", .uuid, .required, .references("user", "id"))
-            .field("room_id", .uuid, .required, .references("room", "id"))
+            .field("user_id", .uuid, .required, .references("users", "id"))
+            .field("room_id", .uuid, .required, .references("rooms", "id"))
             .create()
     }
 

@@ -32,10 +32,12 @@ let server = try Pioneer(
     playground: .redirect(to: .apolloSandbox)
 )
 
+app.middleware.use(CORSMiddleware(configuration: .graphqlWithApolloSandbox()))
+
 server.applyMiddleware(on: app)
 
 defer {
     app.shutdown()
 }
 
-try app.start()
+try app.run()

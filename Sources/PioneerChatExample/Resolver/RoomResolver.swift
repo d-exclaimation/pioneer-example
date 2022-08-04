@@ -23,8 +23,8 @@ extension Room {
     }
 
     func users(ctx: Context, args: NoArguments, ev: EventLoopGroup) async throws -> [User] {
-        try await withThrowingTaskGroup(of: User.self) { [unowned self] group in 
-            let messages = try await self.messages(ctx: ctx, args: args, ev: ev)
+        let messages = try await messages(ctx: ctx, args: args, ev: ev)
+        return try await withThrowingTaskGroup(of: User.self) { group in 
             for message in messages {
                 group.addTask {
                     try await message.author(ctx: ctx, args: args, ev: ev)
