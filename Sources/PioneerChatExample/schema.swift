@@ -12,6 +12,8 @@ func schema() throws -> Schema<Resolver, Context> {
     try .init {
         Type(Room.self) {
             Field("id", at: \.gid)
+            
+            Field("history", at: Room.messages, as: TypeReference<Message>.self)
         }
 
         Type(User.self) {
@@ -25,10 +27,14 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("id", at: \.gid)
             Field("content", at: \.content)
             Field("createdAt", at: \.createAtIso)
+
+            Field("author", at: Message.author, as: TypeReference<User>.self)
+            Field("room", at: Message.room, as: TypeReference<Room>.self)
         }
 
         Query {
             Field("users", at: Resolver.users)
+            Field("rooms", at: Resolver.rooms)
         }
     }
 }

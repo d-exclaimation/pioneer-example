@@ -24,3 +24,20 @@ extension DatedModel {
         return formatter.string(from: createdAt)
     }
 }
+
+extension Array where Element: DatedModel {
+    func sortedByDate() -> [Element] {
+        sorted {
+            switch ($0.createdAt, $1.createdAt) {
+            case (.some(let lhs), .some(let rhs)):
+                return lhs <= rhs
+            case (.some(_), .none):
+                return true
+            case (.none, .some(_)):
+                return false
+            default:
+                return true
+            }
+        }
+    }
+}
