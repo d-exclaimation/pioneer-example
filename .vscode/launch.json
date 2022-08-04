@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug PioneerChatExample",
+      "program": ".build/debug/PioneerChatExample",
+      "args": [],
+      "cwd": "${workspaceFolder:PioneerChatExample}",
+      "preLaunchTask": "swift: Build Debug PioneerChatExample"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Release PioneerChatExample",
+      "program": ".build/release/PioneerChatExample",
+      "args": [],
+      "cwd": "${workspaceFolder:PioneerChatExample}",
+      "preLaunchTask": "swift: Build Release PioneerChatExample"
+    }
+  ]
+}
