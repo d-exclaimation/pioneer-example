@@ -26,7 +26,7 @@ func schema() throws -> Schema<Resolver, Context> {
         }
 
         Query {
-            
+            Field("users", at: Resolver.users)
         }
     }
 }
