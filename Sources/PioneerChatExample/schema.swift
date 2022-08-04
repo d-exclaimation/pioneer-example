@@ -17,6 +17,8 @@ func schema() throws -> Schema<Resolver, Context> {
         Type(User.self) {
             Field("id", at: \.gid)
             Field("name", at: \.name)
+
+            Field("messages", at: User.messages, as: TypeReference<Message>.self)
         }
 
         Type(Message.self) {
