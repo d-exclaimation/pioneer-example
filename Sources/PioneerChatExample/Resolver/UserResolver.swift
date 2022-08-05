@@ -14,6 +14,10 @@ extension Resolver {
     func users(ctx: Context, args: NoArguments) async throws -> [User] {
         try await User.query(on: ctx.db).all()
     }
+
+    func me(ctx: Context, args: NoArguments) async throws -> User? {
+        return await signedUser(ctx: ctx)
+    }
 }
 
 extension User {
