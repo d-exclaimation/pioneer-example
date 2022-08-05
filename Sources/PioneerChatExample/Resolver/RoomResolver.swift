@@ -13,6 +13,15 @@ extension Resolver {
     func rooms(ctx: Context, args: NoArguments) async throws -> [Room] {
         try await Room.query(on: ctx.db).all()
     }
+
+    func open(ctx: Context, args: NoArguments) async throws -> OpenResult {
+        guard let _ = await signedUser(ctx: ctx) else {
+            return Unauthorized(operation: "open")
+        }
+        let room = Room()
+        try await room.create(on: ctx.db)
+        return NewRoom(room: room)
+    }
 }
 
 extension Room {

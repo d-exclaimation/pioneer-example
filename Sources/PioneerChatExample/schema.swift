@@ -88,11 +88,25 @@ func schema() throws -> Schema<Resolver, Context> {
         }
             .description("A result given when Room id is invalid")
 
+        
+        Type(NewRoom.self) {
+            Field("room", at: \.room, as: Room.self)
+                .description("The Room opened") 
+        }
+            .description("A result given a successful open operation")
+
+        // MARK: Union types
+
         Union(AuthResult.self, members: InvalidName.self, LoggedUser.self)
             .description("Results from sign up and log in")
 
         Union(WriteResult.self, members: Unauthorized.self, InvalidRoom.self, NewMessage.self)
             .description("Results from writing a message")
+
+        Union(OpenResult.self, members: Unauthorized.self, NewRoom.self)
+            .description("Results from openning a room")
+
+        // MARK: Root operations
 
         Query {
             Field("me", at: Resolver.me)
@@ -125,6 +139,9 @@ func schema() throws -> Schema<Resolver, Context> {
                     .description("The content of the Message")
             }
                 .description("Write a Message to a Room (must be logged in)")
+
+            Field("open", at: Resolver.open, as: OpenResult.self)
+                .description("Open a Room (must be logged in)")
         }
     }
 }
