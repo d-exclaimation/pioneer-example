@@ -8,7 +8,7 @@
 import Foundation
 import Fluent
 
-final class User: Model, @unchecked Sendable {
+final class User: Model, Codable, @unchecked Sendable {
     static let schema: String = "users"
 
     @ID(key: "id")

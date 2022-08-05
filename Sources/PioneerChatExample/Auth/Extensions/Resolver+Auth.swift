@@ -21,11 +21,4 @@ extension Resolver {
         }
         return try? await User.find(token.uid, on: ctx.db)
     }
-
-    func signUser(user: User) -> String? {
-        guard let token = user.token else {
-            return nil
-        }
-        return try? signers.sign(token)
-    }
 }

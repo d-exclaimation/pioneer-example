@@ -11,7 +11,11 @@ import Graphiti
 
 func schema() throws -> Schema<Resolver, Context> {
     try .init {
+        // MARK: - Scalar types
+
         ID.asScalar()
+
+        // MARK: - Base Object types
 
         Type(Message.self) {
             Field("id", at: \.gid)
@@ -50,6 +54,31 @@ func schema() throws -> Schema<Resolver, Context> {
         }
             .description("A User who can write down messages")
 
+        // MARK: - Utility Object types
+
+        Type(LoggedUser.self) {
+            Field("user", at: \.user, as: User.self)
+                .description("The User for this logged in result")
+            Field("token", at: \.token)
+                .description("JWT token for this User")
+        }
+            .description("A result with all the information of a Logged in User")
+
+        Type(InvalidName.self) {
+            Field("name", at: \.name)
+                .description("The name in question")
+        }
+            .description("A result given an incorrect name")
+        
+        Type(Unauthorized.self) {
+            Field("operation", at: \.operation)
+                .description("Name of operation being performed")
+        }
+            .description("A result given when not logged in")
+
+        Union(AuthResult.self, members: InvalidName.self, LoggedUser.self)
+            .description("Results from sign up and log in")
+
         Query {
             Field("me", at: Resolver.me)
                 .description("Check for the sign in status")
@@ -59,6 +88,20 @@ func schema() throws -> Schema<Resolver, Context> {
 
             Field("rooms", at: Resolver.rooms)
                 .description("List all available Rooms")
+        }
+
+        Mutation {
+            Field("signup", at: Resolver.signup, as: AuthResult.self) {
+                Argument("name", at: \.name)
+                    .description("Name of the User")
+            }
+                .description("Sign up a new User")
+
+            Field("login", at: Resolver.login, as: AuthResult.self) {
+                Argument("name", at: \.name)
+                    .description("Name of the User")
+            }
+                .description("Log into an exisiting User")
         }
     }
 }
