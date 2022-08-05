@@ -1,5 +1,23 @@
 # Pioneer Server Example
 
+An example of a GraphQL server built with Pioneer.
+
+This server provide a chat service which includes:
+- Ability to sign up / log in user
+- Ability to create / open rooms, if authenticated
+- Ability to write messages into a room, if authenticated
+- ~~Ability to listen to messages given sent to a room, if authenticated~~
+
+## Technologies
+
+- Swift for Programming Language
+- GraphQL for API Language
+- Vapor for Web framework
+- Graphiti for GraphQL schema library
+- Pioneer for GraphQL server library
+- PostgreSQL for RDMS
+- Fluent for ORM
+
 ## Usage
 
 Feel free to try out the server.
