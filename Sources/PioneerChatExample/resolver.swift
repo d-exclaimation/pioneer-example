@@ -5,4 +5,6 @@
 //  Created by d-exclaimation on 18:34.
 //
 
-struct Resolver {}
+struct Resolver {
+    let signers = Resolver.jwtSigners()
+}

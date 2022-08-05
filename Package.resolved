@@ -82,6 +82,15 @@
       }
     },
     {
+      "identity" : "jwt-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/jwt-kit.git",
+      "state" : {
+        "revision" : "87ce13a1df913ba4d51cf00606df7ef24d455571",
+        "version" : "4.7.0"
+      }
+    },
+    {
       "identity" : "multipart-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/multipart-kit.git",
