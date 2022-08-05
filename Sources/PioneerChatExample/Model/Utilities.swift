@@ -5,7 +5,11 @@
 //  Created by d-exclaimation on 15:35.
 //
 
+import Pioneer
+
 protocol AuthResult: Codable {}
+
+protocol WriteResult: Codable {}
 
 struct LoggedUser: Codable, AuthResult {
     var user: User
@@ -16,6 +20,14 @@ struct InvalidName: Codable, AuthResult {
     var name: String
 }
 
-struct Unauthorized: Codable {
+struct Unauthorized: Codable, WriteResult {
     var operation: String
+}
+
+struct NewMessage: Codable, WriteResult {
+    var message: Message
+}
+
+struct InvalidRoom: Codable, WriteResult {
+    var roomId: ID
 }

@@ -76,8 +76,23 @@ func schema() throws -> Schema<Resolver, Context> {
         }
             .description("A result given when not logged in")
 
+        Type(NewMessage.self) {
+            Field("message", at: \.message, as: Message.self)
+                .description("The Message written")
+        }
+            .description("A result given a successful write operation")
+
+        Type(InvalidRoom.self) {
+            Field("roomId", at: \.roomId)
+                .description("The ID in question")
+        }
+            .description("A result given when Room id is invalid")
+
         Union(AuthResult.self, members: InvalidName.self, LoggedUser.self)
             .description("Results from sign up and log in")
+
+        Union(WriteResult.self, members: Unauthorized.self, InvalidRoom.self, NewMessage.self)
+            .description("Results from writing a message")
 
         Query {
             Field("me", at: Resolver.me)
@@ -102,6 +117,14 @@ func schema() throws -> Schema<Resolver, Context> {
                     .description("Name of the User")
             }
                 .description("Log into an exisiting User")
+
+            Field("write", at: Resolver.write, as: WriteResult.self) {
+                Argument("to", at: \.to)
+                    .description("The Room id sent the Message to")
+                Argument("content", at: \.content)
+                    .description("The content of the Message")
+            }
+                .description("Write a Message to a Room (must be logged in)")
         }
     }
 }
