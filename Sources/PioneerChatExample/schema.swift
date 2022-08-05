@@ -104,7 +104,7 @@ func schema() throws -> Schema<Resolver, Context> {
             .description("Results from writing a message")
 
         Union(OpenResult.self, members: Unauthorized.self, NewRoom.self)
-            .description("Results from openning a room")
+            .description("Results from opening a room")
 
         // MARK: Root operations
 
