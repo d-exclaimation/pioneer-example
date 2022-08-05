@@ -12,7 +12,7 @@ import DataLoader
 
 struct Context {
     var db: Database
-    var auth: String?
+    var auth: User?
     var userLoader: DataLoader<UUID, User>
     var roomLoader: DataLoader<UUID, Room>
     var messageLoader: DataLoader<Message.ParentID, [Message]>
@@ -21,9 +21,10 @@ struct Context {
 extension Context {
     @Sendable
     static func http(req: Request, res: Response) async throws -> Context {
-        .init(
+        let authToken = req.headers[.authorization].compactMap { Context.getAuthToken(from: $0) }.first
+        return await .init(
             db: req.db,
-            auth: req.headers[.authorization].compactMap { Context.getAuthToken(from: $0) }.first,
+            auth: Context.signedUser(given: authToken, on: req.db),
             userLoader: Context.userLoader(req: req),
             roomLoader: Context.roomLoader(req: req),
             messageLoader: Context.messageLoader(req: req)
@@ -33,16 +34,18 @@ extension Context {
     @Sendable
     static func ws(req: Request, params: ConnectionParams, gql: GraphQLRequest) async throws -> Context {
         guard case .string(let token) = params?["Authorization"] else {
-            return .init(
-                db: req.db,
-                userLoader: Context.userLoader(req: req),
-                roomLoader: Context.roomLoader(req: req),
-                messageLoader: Context.messageLoader(req: req)
-            )
+            throw Abort(.unauthorized)
         }
+        let authToken = Context.getAuthToken(from: token)
+        guard case .some(let user) = await Context.signedUser(given: authToken, on: req.db) else {
+            throw Abort(.unauthorized)
+        }
+
+        try print(String(data: JSONEncoder().encode(gql.variables), encoding: .utf8) ?? "")
+        
         return .init(
             db: req.db,
-            auth: Context.getAuthToken(from: token),
+            auth: user,
             userLoader: Context.userLoader(req: req),
             roomLoader: Context.roomLoader(req: req),
             messageLoader: Context.messageLoader(req: req)

@@ -16,7 +16,7 @@ extension Resolver {
     }
 
     func me(ctx: Context, args: NoArguments) async throws -> User? {
-        return await signedUser(ctx: ctx)
+        return ctx.auth
     }
 
     struct NameArgs: Decodable {
@@ -29,7 +29,7 @@ extension Resolver {
         guard let token = user.token else {
             return InvalidName(name: args.name)
         }
-        return try LoggedUser(user: user, token: signers.sign(token))
+        return try LoggedUser(user: user, token: Auth.signers.sign(token))
     }
 
     func login(ctx: Context, args: NameArgs) async throws -> AuthResult {
@@ -37,7 +37,7 @@ extension Resolver {
         guard let user = user, let token = user.token else {
             return InvalidName(name: args.name)
         }
-        return try LoggedUser(user: user, token: signers.sign(token))
+        return try LoggedUser(user: user, token: Auth.signers.sign(token))
     }
 }
 

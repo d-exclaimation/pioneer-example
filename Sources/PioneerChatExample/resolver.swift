@@ -5,6 +5,8 @@
 //  Created by d-exclaimation on 18:34.
 //
 
+import Pioneer
+
 struct Resolver {
-    let signers = Resolver.jwtSigners()
+    let pubsub = AsyncPubSub()
 }

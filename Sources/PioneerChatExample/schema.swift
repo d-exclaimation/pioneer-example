@@ -143,5 +143,13 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("open", at: Resolver.open, as: OpenResult.self)
                 .description("Open a Room (must be logged in)")
         }
+
+        Subscription {
+            SubscriptionField("listen", as: Message.self, atSub: Resolver.listen) {
+                Argument("to", at: \.to)
+                    .description("The Room id to listen to")
+            }
+                .description("Listen to all Messages sent to a Room (must be logged in)")
+        }
     }
 }

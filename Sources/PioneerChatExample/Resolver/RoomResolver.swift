@@ -15,7 +15,7 @@ extension Resolver {
     }
 
     func open(ctx: Context, args: NoArguments) async throws -> OpenResult {
-        guard let _ = await signedUser(ctx: ctx) else {
+        guard case .some(_) = ctx.auth else {
             return Unauthorized(operation: "open")
         }
         let room = Room()

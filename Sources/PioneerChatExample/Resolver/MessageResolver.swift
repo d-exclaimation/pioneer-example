@@ -9,6 +9,7 @@ import Fluent
 import Graphiti
 import NIO
 import Pioneer
+import GraphQL
 
 extension Resolver {
     struct WriteArgs: Decodable {
@@ -17,7 +18,7 @@ extension Resolver {
     }
 
     func write(ctx: Context, args: WriteArgs) async throws -> WriteResult {
-        guard let user = await signedUser(ctx: ctx), let uid = user.id else {
+        guard let user = ctx.auth, let uid = user.id else {
             return Unauthorized(operation: "write")
         }
         guard let rid = args.to.uuid else {
@@ -25,8 +26,21 @@ extension Resolver {
         }
         let message = Message(content: args.content, userId: uid, roomId: rid)
         try await message.create(on: ctx.db)
+        Task {
+            await pubsub.publish(for: rid.uuidString, payload: message)
+        }
         return NewMessage(message: message)
     }
+
+    struct ListenArgs: Decodable {
+        var to: ID
+    }
+
+    func listen(ctx: Context, args: ListenArgs) throws -> EventStream<Message> {
+        return try pubsub
+            .asyncStream(for: args.to.toUUID().uuidString)
+            .toEventStream()
+    } 
 }
 
 extension Message {
