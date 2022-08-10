@@ -10,17 +10,21 @@ import Pioneer
 import Fluent
 import FluentPostgresDriver
 
+// Make a new Vapor application
 let app = try Application(.detect())
 
+// Connect to a PostgreSQL
+// - Make sure you either change this value or match your database to this
 app.databases.use(
     .postgres(hostname: "localhost", username: "postgres", password: "postgres", database: "pioneer-chat"),
     as: .psql
 )
 
+// Automatically handle migrations
 app.migrations.add(CreateUser(), CreateRoom(), CreateMessage())
-
 try app.autoMigrate().wait()
 
+// Make a new Pioneer server with the appropriate configuration
 let server = try Pioneer(
     schema: schema(), 
     resolver: .init(), 
@@ -32,8 +36,10 @@ let server = try Pioneer(
     playground: .redirect(to: .apolloSandbox)
 )
 
+// Adding CORS to allow Cloud version of Apollo Sandbox 
 app.middleware.use(CORSMiddleware(configuration: .graphqlWithApolloSandbox()))
 
+// Apply Pioneer server handler to the Application
 server.applyMiddleware(on: app)
 
 defer {

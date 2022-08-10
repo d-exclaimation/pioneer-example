@@ -8,7 +8,8 @@
 import Pioneer
 import Graphiti
 
-
+/// The schema for this server
+/// - Returns: The schema instance using Graphiti
 func schema() throws -> Schema<Resolver, Context> {
     try .init {
         // MARK: - Scalar types
