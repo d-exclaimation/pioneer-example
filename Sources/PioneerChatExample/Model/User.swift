@@ -8,12 +8,15 @@
 import Foundation
 import Fluent
 
+/// A User who can write down messages
 final class User: Model, Codable, @unchecked Sendable {
     static let schema: String = "users"
 
+    /// User unique identifier
     @ID(key: "id")
     var id: UUID?
 
+    /// User public name
     @Field(key: "name")
     var name: String
 
