@@ -10,6 +10,7 @@ import GraphQL
 import JWTKit
 
 extension User {
+    /// Token structure for a particular user to be encodable as JWT payload
     struct Token: JWTPayload, Equatable {
         enum CodingKeys: String, CodingKey {
             case subject = "sub"
@@ -17,8 +18,13 @@ extension User {
             case uid = "uid"
         }
 
+        /// The JWT subject claim
         var subject: SubjectClaim
+
+        /// The time where the JWT token generated would no longer be usable
         var expiration: ExpirationClaim
+
+        /// The user id to be stored
         var uid: UUID
 
         func verify(using signer: JWTSigner) throws {
@@ -34,6 +40,7 @@ extension User {
         }
     }
 
+    /// Create a token from the user object
     var token: Token? {
         guard let id = id else {
             return nil

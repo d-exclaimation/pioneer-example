@@ -7,12 +7,15 @@
 
 import JWTKit
 
+/// Global / static JWT signers
 enum Auth {
-    static func jwtSigners() -> JWTSigners {
+    /// Create a new JWT Signers with the proper algorithm and key
+    fileprivate static func jwtSigners() -> JWTSigners {
         let signers = JWTSigners()
         signers.use(.hs256(key: "some-jwt-key"))
         return signers
     }
 
+    /// Global signers
     static let signers = jwtSigners()
 }

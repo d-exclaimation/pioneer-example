@@ -7,6 +7,7 @@
 
 import Fluent
 
+/// The migration to create the message table and also drop it
 struct CreateMessage: AsyncMigration {
     func prepare(on database: Database) async throws {
         try await database.schema("messages")
@@ -19,6 +20,6 @@ struct CreateMessage: AsyncMigration {
     }
 
     func revert(on database: Database) async throws {
-        try await database.schema("userss").delete()
+        try await database.schema("messages").delete()
     }
 }

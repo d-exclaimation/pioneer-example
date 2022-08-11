@@ -7,6 +7,7 @@
 
 import Fluent
 
+/// The migration to create the user table and also drop it
 struct CreateUser: AsyncMigration {
     func prepare(on database: Database) async throws {
         try await database.schema("users")
@@ -16,6 +17,6 @@ struct CreateUser: AsyncMigration {
     }
 
     func revert(on database: Database) async throws {
-        try await database.schema("userss").delete()
+        try await database.schema("users").delete()
     }
 }

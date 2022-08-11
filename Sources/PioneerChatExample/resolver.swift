@@ -10,5 +10,6 @@ import Pioneer
 /// Main structure that contains all resolver function
 /// and can be used to perform dependecies injection
 struct Resolver {
-    let pubsub = AsyncPubSub()
+    /// The PubSub used to publish messages to subscribers
+    let pubsub: PubSub = AsyncPubSub()
 }

@@ -8,11 +8,14 @@
 import Foundation
 import protocol Fluent.Model
 
+/// Any model with a createdAt field
 protocol DatedModel: Model {
+    /// Created at date and time
     var createdAt: Date? { get }
 }
 
 extension DatedModel {
+    /// An ISO formatted datetime for the created at field
     var createAtIso: String {
         guard let createdAt = self.createdAt else {
             return ""
@@ -26,6 +29,8 @@ extension DatedModel {
 }
 
 extension Array where Element: DatedModel {
+    /// Returns the elements of the sequence, sorted using the given their createdAt field
+    /// - Returns: A sorted array of the sequence’s elements
     func sortedByDate() -> [Element] {
         sorted {
             switch ($0.createdAt, $1.createdAt) {

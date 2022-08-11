@@ -7,6 +7,7 @@
 
 import Fluent
 
+/// The migration to create the room table and also drop it
 struct CreateRoom: AsyncMigration {
     func prepare(on database: Database) async throws {
         try await database.schema("rooms")
