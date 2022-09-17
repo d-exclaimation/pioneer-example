@@ -100,15 +100,6 @@
       }
     },
     {
-      "identity" : "pioneer",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/d-exclaimation/pioneer",
-      "state" : {
-        "revision" : "177211771070a4b38a43a9dd161159ab3d5ad767",
-        "version" : "0.9.4"
-      }
-    },
-    {
       "identity" : "postgres-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-kit.git",

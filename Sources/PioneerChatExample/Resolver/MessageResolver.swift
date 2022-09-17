@@ -53,7 +53,7 @@ extension Resolver {
     func listen(ctx: Context, args: ListenArgs) throws -> EventStream<Message> {
         // Get the async stream from the pubsub with the topic of the room id
         try pubsub
-            .asyncStream(for: args.to.toUUID().uuidString)
+            .asyncStream(Message.self, for: args.to.toUUID().uuidString)
             .toEventStream()
     } 
 }

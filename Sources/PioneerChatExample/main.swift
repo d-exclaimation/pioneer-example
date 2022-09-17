@@ -31,6 +31,11 @@ let server = try Pioneer(
     contextBuilder: Context.http(req:res:),
     httpStrategy: .csrfPrevention, 
     websocketContextBuilder: Context.ws(req:params:gql:),
+    websocketOnInit: { params in
+        guard case .string(_) = params?["Authorization"] else {
+            throw Abort(.unauthorized)
+        }
+    },
     websocketProtocol: .graphqlWs, 
     introspection: true, 
     playground: .redirect(to: .apolloSandbox)
