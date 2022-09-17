@@ -7,13 +7,13 @@
 
 import Pioneer
 import Graphiti
+import Foundation
 
 /// The schema for this server
 /// - Returns: The schema instance using Graphiti
 func schema() throws -> Schema<Resolver, Context> {
-    try .init {
+    return try .init {
         // MARK: - Scalar types
-
         ID.asScalar()
 
         // MARK: - Base Object types
