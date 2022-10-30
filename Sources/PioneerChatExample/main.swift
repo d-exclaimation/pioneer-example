@@ -38,7 +38,7 @@ let server = try Pioneer(
     },
     websocketProtocol: .graphqlWs, 
     introspection: true, 
-    playground: .redirect(to: .apolloSandbox)
+    playground: .sandbox
 )
 
 // Adding CORS to allow Cloud version of Apollo Sandbox 

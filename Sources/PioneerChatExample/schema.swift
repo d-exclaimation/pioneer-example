@@ -12,7 +12,7 @@ import Foundation
 /// The schema for this server
 /// - Returns: The schema instance using Graphiti
 func schema() throws -> Schema<Resolver, Context> {
-    return try .init {
+    try .init {
         // MARK: - Scalar types
         ID.asScalar()
 
