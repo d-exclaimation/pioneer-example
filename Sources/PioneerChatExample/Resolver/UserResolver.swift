@@ -7,6 +7,7 @@
 
 import Vapor
 import Graphiti
+import GraphQL
 import Fluent
 import Foundation
 

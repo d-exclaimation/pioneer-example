@@ -33,16 +33,18 @@ extension Resolver {
 extension Room {
     /// Message history for this Room sent by any User
     func messages(ctx: Context, args: NoArguments, ev: EventLoopGroup) async throws -> [Message] {
-        try await ctx.messageLoader
+        let res = try await ctx.messageLoader
             .load(key: .room(id ?? .init()), on: ev)
             .sortedByDate()
+
+        return res
     }
 
     /// Users who have written into this Room
     func users(ctx: Context, args: NoArguments, ev: EventLoopGroup) async throws -> [User] {
         // Get all the messages from the dataloader and all unique user ids
         let messages = try await messages(ctx: ctx, args: args, ev: ev)
-        let uniqueUserIds = Set(messages.map(\.user.id)).map { $0 ?? .init() }
+        let uniqueUserIds = Set(messages.map(\.$user.id)).map { $0 }
 
         // Load all unique users from the message
         return try await ctx.userLoader

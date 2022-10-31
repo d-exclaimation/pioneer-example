@@ -71,7 +71,7 @@ extension Context {
             let messages = try? await Message
                 .query(on: req.db)
                 .group(.or) {
-                    $0.filter(\.user.$id ~~ userIds).filter(\.room.$id ~~ roomIds)
+                    $0.filter(\.$user.$id ~~ userIds).filter(\.$room.$id ~~ roomIds)
                 }
                 .all()
             
@@ -85,9 +85,9 @@ extension Context {
             return parents.map { parent in 
                 switch parent {
                 case .room(let roomId):
-                    return .success(messages.filter { $0.room.id == roomId } )
+                    return .success(messages.filter { $0.$room.id == roomId } )
                 case .user(let userId):
-                    return .success(messages.filter { $0.user.id == userId })
+                    return .success(messages.filter { $0.$user.id == userId })
                 }
             }
         }

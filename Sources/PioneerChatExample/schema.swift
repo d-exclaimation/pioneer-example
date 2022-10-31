@@ -37,9 +37,9 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("id", at: \.gid)
                 .description("Room unique identifier")
 
-            Field("history", at: Room.messages, as: Message.self)
+            Field("history", at: Room.messages, as: [Message].self)
                 .description("Message history for this Room sent by any User")
-            Field("users", at: Room.users, as: TypeReference<User>.self)
+            Field("users", at: Room.users, as: [TypeReference<User>].self)
                 .description("Users who have written into this Room")
         }
             .description("A certain Room / channel of messages")
@@ -50,7 +50,7 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("name", at: \.name)
                 .description("User public name")
 
-            Field("messages", at: User.messages, as: Message.self)
+            Field("messages", at: User.messages, as: [Message].self)
                 .description("Message written by this User sent to any Room")
         }
             .description("A User who can write down messages")
