@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v12)
     ],
     dependencies: [
-        .package(url: "https://github.com/GraphQLSwift/Graphiti", from: "1.2.0"),
+        .package(url: "https://github.com/GraphQLSwift/Graphiti", from: "1.2.1"),
         .package(url: "https://github.com/GraphQLSwift/DataLoader", from: "2.2.0"),
         .package(url: "https://github.com/vapor/vapor", from: "4.64.0"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
