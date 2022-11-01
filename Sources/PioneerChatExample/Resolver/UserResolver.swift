@@ -41,14 +41,26 @@ extension Resolver {
         return try LoggedUser(user: user, token: Auth.signers.sign(token))
     }
 
+    /// Argument for asking any login information
+    struct LoginArgs: Decodable {
+        /// Login information
+        var info: LoginInfo
+    }
+
     /// Log into an exisiting User
-    func login(ctx: Context, args: NameArgs) async throws -> AuthResult {
+    func login(ctx: Context, args: LoginArgs) async throws -> AuthResult {
         // Find the user in question
-        let user = try await User.query(on: ctx.db).filter(\.$name == args.name).first()
+        let user: User?
+
+        if let name = args.info.name {
+            user = try await User.query(on: ctx.db).filter(\.$name == name).first()
+        } else {
+            user = try await User.find(args.info.id?.uuid, on: ctx.db)
+        }
         
         // Try to create the user token and the JWT token
         guard let user = user, let token = user.token else {
-            return InvalidName(name: args.name)
+            return InvalidName(name: args.info.name ?? args.info.id?.string ?? "No info")
         }
         return try LoggedUser(user: user, token: Auth.signers.sign(token))
     }

@@ -16,6 +16,7 @@ func schema() throws -> Schema<Resolver, Context> {
         // MARK: - Scalar types
         ID.asScalar()
 
+
         // MARK: - Base Object types
 
         Type(Message.self) {
@@ -96,6 +97,17 @@ func schema() throws -> Schema<Resolver, Context> {
         }
             .description("A result given a successful open operation")
 
+        Input(LoginInfo.self) {
+            InputField("id", as: ID?.self)
+                .defaultValue(nil)
+                .description("Attached ID")
+
+            InputField("name", as: String?.self)
+                .defaultValue(nil)
+                .description("Attached name")
+        }
+            .description("Any login information")
+
         // MARK: Union types
 
         Union(AuthResult.self, members: InvalidName.self, LoggedUser.self)
@@ -128,8 +140,9 @@ func schema() throws -> Schema<Resolver, Context> {
                 .description("Sign up a new User")
 
             Field("login", at: Resolver.login, as: AuthResult.self) {
-                Argument("name", at: \.name)
-                    .description("Name of the User")
+                Argument("info", at: \.info)
+                    .defaultValue(.init())
+                    .description("Any login information")
             }
                 .description("Log into an exisiting User")
 
