@@ -9,6 +9,7 @@ import Vapor
 import Pioneer
 import Fluent
 import FluentPostgresDriver
+import GraphQLDepthLimit
 
 // Make a new Vapor application
 let app = try Application(.detect())
@@ -31,7 +32,10 @@ let server = try Pioneer(
     httpStrategy: .csrfPrevention, 
     websocketProtocol: .graphqlWs, 
     introspection: true, 
-    playground: .sandbox
+    playground: .sandbox,
+    validationRules: .computed({ req in 
+        [depthLimit(req.ast, max: 10)]
+    })
 )
 
 // Apply Pioneer server handler to the Application

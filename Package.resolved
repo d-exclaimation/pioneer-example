@@ -82,6 +82,15 @@
       }
     },
     {
+      "identity" : "graphql-depth-limit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/d-exclaimation/graphql-depth-limit",
+      "state" : {
+        "revision" : "8e3bed4d25312227211d3d4476191cc96d9a030a",
+        "version" : "0.1.0"
+      }
+    },
+    {
       "identity" : "jwt-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/jwt-kit.git",
