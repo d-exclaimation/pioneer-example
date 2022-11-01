@@ -28,24 +28,25 @@ try app.autoMigrate().wait()
 let server = try Pioneer(
     schema: schema(), 
     resolver: .init(), 
-    contextBuilder: Context.http(req:res:),
     httpStrategy: .csrfPrevention, 
-    websocketContextBuilder: Context.ws(req:params:gql:),
-    websocketOnInit: { params in
-        guard case .string(_) = params?["Authorization"] else {
-            throw Abort(.unauthorized)
-        }
-    },
     websocketProtocol: .graphqlWs, 
     introspection: true, 
-    playground: .graphiql
+    playground: .sandbox
 )
 
-// Adding CORS to allow Cloud version of Apollo Sandbox 
-app.middleware.use(CORSMiddleware(configuration: .graphqlWithApolloSandbox()))
-
 // Apply Pioneer server handler to the Application
-server.applyMiddleware(on: app)
+app.middleware.use(
+    server.vaporMiddleware(
+        context: Context.http(req:res:),
+        websocketContext: Context.ws(req:params:gql:),
+        websocketGuard: { req, params in
+            guard case .string(_) = params?["Authorization"] else {
+                throw Abort(.unauthorized)
+            }
+        }
+    ),
+    at: .beginning
+)
 
 defer {
     app.shutdown()

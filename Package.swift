@@ -9,13 +9,13 @@ let package = Package(
         .macOS(.v12)
     ],
     dependencies: [
-        .package(url: "https://github.com/GraphQLSwift/Graphiti", from: "1.1.1"),
+        .package(url: "https://github.com/GraphQLSwift/Graphiti", from: "1.2.0"),
         .package(url: "https://github.com/GraphQLSwift/DataLoader", from: "2.2.0"),
         .package(url: "https://github.com/vapor/vapor", from: "4.64.0"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.0.0"),
         .package(url: "https://github.com/vapor/jwt-kit.git", from: "4.0.0"),
-        .package(path: "../../libs/pioneer")
+        .package(url: "https://github.com/d-exclaimation/pioneer", branch: "v1")
     ],
     targets: [
         .executableTarget(

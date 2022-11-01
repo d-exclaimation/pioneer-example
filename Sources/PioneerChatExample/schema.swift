@@ -26,9 +26,9 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("createdAt", at: \.createAtIso)
                 .description("Message creation date and time")
 
-            Field("author", at: Message.author, as: TypeReference<User>.self)
+            Field("author", at: Message.author, as: User.self)
                 .description("User who wrote this Message")
-            Field("room", at: Message.room, as: TypeReference<Room>.self)
+            Field("room", at: Message.room, as: Room.self)
                 .description("Room where this Message is sent to")
         }
             .description("A Message sent to a room by a user")
@@ -39,7 +39,7 @@ func schema() throws -> Schema<Resolver, Context> {
 
             Field("history", at: Room.messages, as: [Message].self)
                 .description("Message history for this Room sent by any User")
-            Field("users", at: Room.users, as: [TypeReference<User>].self)
+            Field("users", at: Room.users, as: [User].self)
                 .description("Users who have written into this Room")
         }
             .description("A certain Room / channel of messages")

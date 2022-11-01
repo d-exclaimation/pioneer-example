@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/GraphQLSwift/Graphiti",
       "state" : {
-        "revision" : "0973a92e8320cf359cc35b6166c9e0350fbcaf06",
-        "version" : "1.1.1"
+        "revision" : "5b15e16bfaa75b56eded4a0bbcb58345b2e66c43",
+        "version" : "1.2.1"
       }
     },
     {
@@ -97,6 +97,15 @@
       "state" : {
         "revision" : "0d55c35e788451ee27222783c7d363cb88092fab",
         "version" : "4.5.2"
+      }
+    },
+    {
+      "identity" : "pioneer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/d-exclaimation/pioneer",
+      "state" : {
+        "branch" : "v1",
+        "revision" : "a973f7f040c3c30e571b070d4bf4f614dc255d5b"
       }
     },
     {

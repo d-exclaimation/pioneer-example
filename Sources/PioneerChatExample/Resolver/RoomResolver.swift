@@ -44,7 +44,7 @@ extension Room {
     func users(ctx: Context, args: NoArguments, ev: EventLoopGroup) async throws -> [User] {
         // Get all the messages from the dataloader and all unique user ids
         let messages = try await messages(ctx: ctx, args: args, ev: ev)
-        let uniqueUserIds = Set(messages.map(\.$user.id)).map { $0 }
+        let uniqueUserIds = Array(messages.map(\.$user.id).uniqued())
 
         // Load all unique users from the message
         return try await ctx.userLoader

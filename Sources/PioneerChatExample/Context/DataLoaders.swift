@@ -15,7 +15,7 @@ extension Context {
     /// - Parameter req: The request to get the event loop and database
     /// - Returns: A DataLoader for user
     static func userLoader(req: Request) -> DataLoader<UUID, User> {
-        return .init(on: req) { keys in
+        return .init(on: req.eventLoop) { keys in
             // Get all users which id is in the keys
             let users = try? await User.query(on: req.db).filter(\.$id ~~ keys).all()
 
@@ -33,7 +33,7 @@ extension Context {
     /// - Parameter req: The request to get the event loop and database
     /// - Returns: A DataLoader for room
     static func roomLoader(req: Request) -> DataLoader<UUID, Room> {
-        return .init(on: req) { keys in
+        return .init(on: req.eventLoop) { keys in
             // Get all rooms which id is in the keys
             let rooms = try? await Room.query(on: req.db).filter(\.$id ~~ keys).all()
 
@@ -51,7 +51,7 @@ extension Context {
     /// - Parameter req: The request to get the event loop and database
     /// - Returns: A DataLoader for messages
     static func messageLoader(req: Request) -> DataLoader<Message.ParentID, [Message]> {
-        return .init(on: req) { parents in 
+        return .init(on: req.eventLoop) { parents in 
             // Get the user ids
             let userIds = parents.compactMap { parent -> UUID? in 
                 guard case .user(let uuid) = parent else {
