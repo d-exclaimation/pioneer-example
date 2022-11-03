@@ -41,7 +41,7 @@ let server = try Pioneer(
 // Apply Pioneer server handler to the Application
 app.middleware.use(
     server.vaporMiddleware(
-        at: [.anything, "graphql"],
+        at: "graphql",
         context: Context.http(req:res:),
         websocketContext: Context.ws(req:params:gql:),
         websocketGuard: { req, params in
@@ -49,8 +49,7 @@ app.middleware.use(
                 throw Abort(.unauthorized)
             }
         }
-    ),
-    at: .beginning
+    )
 )
 
 defer {
