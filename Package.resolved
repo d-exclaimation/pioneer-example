@@ -113,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/d-exclaimation/pioneer",
       "state" : {
-        "branch" : "v1",
-        "revision" : "a973f7f040c3c30e571b070d4bf4f614dc255d5b"
+        "branch" : "version-1",
+        "revision" : "04a0ef62151f1cce38016b91bc7e91d05ce9453a"
       }
     },
     {

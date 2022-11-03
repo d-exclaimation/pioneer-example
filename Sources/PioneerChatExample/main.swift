@@ -33,14 +33,15 @@ let server = try Pioneer(
     websocketProtocol: .graphqlWs, 
     introspection: true, 
     playground: .sandbox,
-    validationRules: .computed({ req in 
-        [depthLimit(req.ast, max: 10)]
+    validationRules: .computed({ gql in 
+        [depthLimit(gql.ast, max: 10)]
     })
 )
 
 // Apply Pioneer server handler to the Application
 app.middleware.use(
     server.vaporMiddleware(
+        at: [.anything, "graphql"],
         context: Context.http(req:res:),
         websocketContext: Context.ws(req:params:gql:),
         websocketGuard: { req, params in
