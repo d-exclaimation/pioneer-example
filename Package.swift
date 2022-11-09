@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.0.0"),
         .package(url: "https://github.com/vapor/jwt-kit.git", from: "4.0.0"),
         .package(url: "https://github.com/d-exclaimation/graphql-depth-limit", from: "0.1.0"),
-        .package(url: "https://github.com/d-exclaimation/pioneer", branch: "version-1")
+        .package(url: "https://github.com/d-exclaimation/pioneer", from: "1.0.0-beta")
     ],
     targets: [
         .executableTarget(
