@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/GraphQLSwift/Graphiti",
       "state" : {
-        "revision" : "0973a92e8320cf359cc35b6166c9e0350fbcaf06",
-        "version" : "1.1.1"
+        "revision" : "5b15e16bfaa75b56eded4a0bbcb58345b2e66c43",
+        "version" : "1.2.1"
       }
     },
     {
@@ -79,6 +79,15 @@
       "state" : {
         "revision" : "ebd2ea40676f8bcbdfd6088c408f3ed321c1a905",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "graphql-depth-limit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/d-exclaimation/graphql-depth-limit",
+      "state" : {
+        "revision" : "8e3bed4d25312227211d3d4476191cc96d9a030a",
+        "version" : "0.1.0"
       }
     },
     {
@@ -104,8 +113,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/d-exclaimation/pioneer",
       "state" : {
-        "revision" : "177211771070a4b38a43a9dd161159ab3d5ad767",
-        "version" : "0.9.4"
+        "revision" : "b63739af0e5be9340184c5b18e674a7a8212ec2f",
+        "version" : "1.0.0"
       }
     },
     {
@@ -212,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "ece5057615d1bee848341eceafdf04ca54d60177",
-        "version" : "2.41.0"
+        "revision" : "edfceecba13d68c1c993382806e72f7e96feaa86",
+        "version" : "2.44.0"
       }
     },
     {
@@ -266,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor",
       "state" : {
-        "revision" : "b5181996f104d09a0bb52a6ddf5f21d79b9ceb4d",
-        "version" : "4.64.0"
+        "revision" : "0eacdf3c7eab6df493ce328f2e97c2873b3e1c1e",
+        "version" : "4.67.1"
       }
     },
     {

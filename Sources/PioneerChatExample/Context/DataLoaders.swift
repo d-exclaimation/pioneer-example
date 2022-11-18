@@ -15,7 +15,7 @@ extension Context {
     /// - Parameter req: The request to get the event loop and database
     /// - Returns: A DataLoader for user
     static func userLoader(req: Request) -> DataLoader<UUID, User> {
-        return .init(on: req) { keys in
+        return .init(on: req.eventLoop) { keys in
             // Get all users which id is in the keys
             let users = try? await User.query(on: req.db).filter(\.$id ~~ keys).all()
 
@@ -33,7 +33,7 @@ extension Context {
     /// - Parameter req: The request to get the event loop and database
     /// - Returns: A DataLoader for room
     static func roomLoader(req: Request) -> DataLoader<UUID, Room> {
-        return .init(on: req) { keys in
+        return .init(on: req.eventLoop) { keys in
             // Get all rooms which id is in the keys
             let rooms = try? await Room.query(on: req.db).filter(\.$id ~~ keys).all()
 
@@ -51,7 +51,7 @@ extension Context {
     /// - Parameter req: The request to get the event loop and database
     /// - Returns: A DataLoader for messages
     static func messageLoader(req: Request) -> DataLoader<Message.ParentID, [Message]> {
-        return .init(on: req) { parents in 
+        return .init(on: req.eventLoop) { parents in 
             // Get the user ids
             let userIds = parents.compactMap { parent -> UUID? in 
                 guard case .user(let uuid) = parent else {
@@ -71,7 +71,7 @@ extension Context {
             let messages = try? await Message
                 .query(on: req.db)
                 .group(.or) {
-                    $0.filter(\.user.$id ~~ userIds).filter(\.room.$id ~~ roomIds)
+                    $0.filter(\.$user.$id ~~ userIds).filter(\.$room.$id ~~ roomIds)
                 }
                 .all()
             
@@ -85,9 +85,9 @@ extension Context {
             return parents.map { parent in 
                 switch parent {
                 case .room(let roomId):
-                    return .success(messages.filter { $0.room.id == roomId } )
+                    return .success(messages.filter { $0.$room.id == roomId } )
                 case .user(let userId):
-                    return .success(messages.filter { $0.user.id == userId })
+                    return .success(messages.filter { $0.$user.id == userId })
                 }
             }
         }

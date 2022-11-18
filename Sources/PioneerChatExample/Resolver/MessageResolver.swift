@@ -53,7 +53,7 @@ extension Resolver {
     func listen(ctx: Context, args: ListenArgs) throws -> EventStream<Message> {
         // Get the async stream from the pubsub with the topic of the room id
         try pubsub
-            .asyncStream(for: args.to.toUUID().uuidString)
+            .asyncStream(Message.self, for: args.to.toUUID().uuidString)
             .toEventStream()
     } 
 }
@@ -62,11 +62,11 @@ extension Resolver {
 extension Message {
     /// User who wrote this Message
     func author(ctx: Context, args: NoArguments, ev: EventLoopGroup) async throws -> User {
-        try await ctx.userLoader.load(key: user.id ?? .init(), on: ev)
+        try await ctx.userLoader.load(key: $user.id, on: ev)
     }
 
     // Room where this Message is sent to
     func room(ctx: Context, args: NoArguments, ev: EventLoopGroup) async throws -> Room {
-        try await ctx.roomLoader.load(key: room.id ?? .init(), on: ev)
+        try await ctx.roomLoader.load(key: $room.id, on: ev)
     }
 }

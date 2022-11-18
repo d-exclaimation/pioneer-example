@@ -52,7 +52,7 @@ extension Context {
     ///   - params: The connection parameters given when initializing connection
     ///   - gql: The GraphQL operation itself
     /// - Returns: A full context with all its properties, if authenticated
-    @Sendable static func ws(req: Request, params: ConnectionParams, gql: GraphQLRequest) async throws -> Context {
+    @Sendable static func ws(req: Request, params: Payload, gql: GraphQLRequest) async throws -> Context {
         // Get the Authorization header equivalent in the connection parameter, otherwise unauthorized
         guard case .string(let token) = params?["Authorization"] else {
             throw Abort(.unauthorized)

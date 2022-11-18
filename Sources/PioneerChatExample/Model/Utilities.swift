@@ -54,3 +54,12 @@ struct NewRoom: Codable, OpenResult {
     /// The Room opened
     var room: Room
 }
+
+/// Login information
+struct LoginInfo: Codable {
+    /// Attached ID
+    var id: ID?
+
+    /// Attached name
+    var name: String?
+}

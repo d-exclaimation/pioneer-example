@@ -7,14 +7,15 @@
 
 import Pioneer
 import Graphiti
+import Foundation
 
 /// The schema for this server
 /// - Returns: The schema instance using Graphiti
 func schema() throws -> Schema<Resolver, Context> {
     try .init {
         // MARK: - Scalar types
-
         ID.asScalar()
+
 
         // MARK: - Base Object types
 
@@ -26,9 +27,9 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("createdAt", at: \.createAtIso)
                 .description("Message creation date and time")
 
-            Field("author", at: Message.author, as: TypeReference<User>.self)
+            Field("author", at: Message.author, as: User.self)
                 .description("User who wrote this Message")
-            Field("room", at: Message.room, as: TypeReference<Room>.self)
+            Field("room", at: Message.room, as: Room.self)
                 .description("Room where this Message is sent to")
         }
             .description("A Message sent to a room by a user")
@@ -37,9 +38,9 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("id", at: \.gid)
                 .description("Room unique identifier")
 
-            Field("history", at: Room.messages, as: Message.self)
+            Field("history", at: Room.messages, as: [Message].self)
                 .description("Message history for this Room sent by any User")
-            Field("users", at: Room.users, as: TypeReference<User>.self)
+            Field("users", at: Room.users, as: [User].self)
                 .description("Users who have written into this Room")
         }
             .description("A certain Room / channel of messages")
@@ -50,7 +51,7 @@ func schema() throws -> Schema<Resolver, Context> {
             Field("name", at: \.name)
                 .description("User public name")
 
-            Field("messages", at: User.messages, as: Message.self)
+            Field("messages", at: User.messages, as: [Message].self)
                 .description("Message written by this User sent to any Room")
         }
             .description("A User who can write down messages")
@@ -96,6 +97,17 @@ func schema() throws -> Schema<Resolver, Context> {
         }
             .description("A result given a successful open operation")
 
+        Input(LoginInfo.self) {
+            InputField("id", as: ID?.self)
+                .defaultValue(nil)
+                .description("Attached ID")
+
+            InputField("name", as: String?.self)
+                .defaultValue(nil)
+                .description("Attached name")
+        }
+            .description("Any login information")
+
         // MARK: Union types
 
         Union(AuthResult.self, members: InvalidName.self, LoggedUser.self)
@@ -128,8 +140,9 @@ func schema() throws -> Schema<Resolver, Context> {
                 .description("Sign up a new User")
 
             Field("login", at: Resolver.login, as: AuthResult.self) {
-                Argument("name", at: \.name)
-                    .description("Name of the User")
+                Argument("info", at: \.info)
+                    .defaultValue(.init())
+                    .description("Any login information")
             }
                 .description("Log into an exisiting User")
 

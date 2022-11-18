@@ -9,6 +9,7 @@ import Vapor
 import Pioneer
 import Fluent
 import FluentPostgresDriver
+import GraphQLDepthLimit
 
 // Make a new Vapor application
 let app = try Application(.detect())
@@ -28,19 +29,28 @@ try app.autoMigrate().wait()
 let server = try Pioneer(
     schema: schema(), 
     resolver: .init(), 
-    contextBuilder: Context.http(req:res:),
     httpStrategy: .csrfPrevention, 
-    websocketContextBuilder: Context.ws(req:params:gql:),
     websocketProtocol: .graphqlWs, 
     introspection: true, 
-    playground: .redirect(to: .apolloSandbox)
+    playground: .sandbox,
+    validationRules: .computed({ gql in 
+        [depthLimit(gql.ast, max: 10)]
+    })
 )
 
-// Adding CORS to allow Cloud version of Apollo Sandbox 
-app.middleware.use(CORSMiddleware(configuration: .graphqlWithApolloSandbox()))
-
 // Apply Pioneer server handler to the Application
-server.applyMiddleware(on: app)
+app.middleware.use(
+    server.vaporMiddleware(
+        at: "graphql",
+        context: Context.http(req:res:),
+        websocketContext: Context.ws(req:params:gql:),
+        websocketGuard: { req, params in
+            guard case .string(_) = params?["Authorization"] else {
+                throw Abort(.unauthorized)
+            }
+        }
+    )
+)
 
 defer {
     app.shutdown()
