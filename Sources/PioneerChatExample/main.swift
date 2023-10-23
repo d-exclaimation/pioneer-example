@@ -52,6 +52,20 @@ app.middleware.use(
     )
 )
 
+
+app.get("other") { req async throws in
+    req.logger.info(" \(req.headers[.secWebSocketProtocol])")
+    return try await server.webSocketHandler(
+        req: req, 
+        context: Context.ws(req:params:gql:),
+        guard: { req, params in
+            guard case .string(_) = params?["Authorization"] else {
+                throw Abort(.unauthorized)
+            }
+        }
+    );
+}
+
 defer {
     app.shutdown()
 }
